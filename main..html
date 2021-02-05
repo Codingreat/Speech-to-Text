@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>Codingreat, Javascript Speech to Text</title>
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+
+      <h3>Javascript Speech to Text</h3>
+      <p>Click on the button and say something</p>
+      <p>
+        <button id="btn-speak" onclick="startspeechRecognition()">Speech to Text</button>
+        <span id="action"></span>
+      </p>
+      <div id="output" class="hide">
+        hi everybody
+      </div> 
+
+      <script>
+       
+         function startspeechRecognition(){
+        
+         // get output div reference
+         var output = document.getElementById("output");
+         // get action element reference
+         var action = document.getElementById("action");
+        
+           // new speech recognition object
+           var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+           var recognition = new SpeechRecognition();
+        
+           // This runs when the speech recognition service starts
+           recognition.onstart = function() {
+               action.innerHTML = "<span>listening, please speak...</span>";
+           };
+           
+           recognition.onspeechend = function() {
+               action.innerHTML = "<span>stopped listening, hope you are done...</span>";
+               recognition.stop();
+           }
+         
+           // This runs when the speech recognition service returns result
+           recognition.onresult = function(event) {
+               var transcript = event.results[0][0].transcript;
+               
+               output.innerHTML = "<b>Text:</b> " + transcript ;
+               output.classList.remove("hide");
+           };
+         
+            // start recognition
+            recognition.start();
+         }
+       </script>
+  </body>
+</html>
